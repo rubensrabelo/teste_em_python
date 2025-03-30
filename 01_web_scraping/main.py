@@ -4,8 +4,10 @@ import zipfile
 from bs4 import BeautifulSoup
 from urllib.parse import urljoin
 
+url_base = "https://www.gov.br/ans/pt-br/acesso-a-informacao/participacao-da-sociedade/atualizacao-do-rol-de-procedimentos"
 
-def download_pdfs(url_base, destin_folder="pdfs"):
+
+def download_pdfs(url_base, destin_folder="files"):
     response = requests.get(url_base)
     response.raise_for_status()
 
@@ -40,7 +42,7 @@ def download_pdfs(url_base, destin_folder="pdfs"):
     return destin_folder
 
 
-def compress_pdfs(destin_folder="pdfs", zip_name="arquivos_pdfs.zip"):
+def compress_pdfs(destin_folder="files", zip_name="arquivos_pdfs.zip"):
     zip_path = os.path.join(destin_folder, zip_name)
 
     with zipfile.ZipFile(zip_path, "w", zipfile.ZIP_DEFLATED) as zipf:
@@ -49,11 +51,10 @@ def compress_pdfs(destin_folder="pdfs", zip_name="arquivos_pdfs.zip"):
                 if file.endswith(".pdf"):
                     file_path = os.path.join(root, file)
                     zipf.write(file_path, os.path.relpath(file_path, destin_folder))
-    
+
     print()
     print(f"Arquivos compactados em {zip_path}")
 
-url_base = "https://www.gov.br/ans/pt-br/acesso-a-informacao/participacao-da-sociedade/atualizacao-do-rol-de-procedimentos"
 
 destin_folder = download_pdfs(url_base)
 compress_pdfs(destin_folder)
