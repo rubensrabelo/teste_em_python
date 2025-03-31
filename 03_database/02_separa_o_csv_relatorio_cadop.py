@@ -10,21 +10,21 @@ OUTPUT_DIR = "files"
 os.makedirs(OUTPUT_DIR, exist_ok=True)
 
 df = pd.read_csv(
-    CSV_PATH,
-    delimiter=";",
-    dtype={
-        "Registro_ANS": "string",
-        "CNPJ": "string",
-        "Razao_Social": "string",
-        "Nome_Fantasia": "string",
-        "Modalidade": "string",
-        "DDD": "string",
-        "Telefone": "string",
-        "Fax": "string",
-        "Endereco_eletronico": "string",
-        "Regiao_de_Comercializacao": "Int64",
-        "Data_Registro_ANS": "string"
-    }
+        CSV_PATH,
+        delimiter=";",
+        dtype={
+            "Registro_ANS": "string",
+            "CNPJ": "string",
+            "Razao_Social": "string",
+            "Nome_Fantasia": "string",
+            "Modalidade": "string",
+            "DDD": "string",
+            "Telefone": "string",
+            "Fax": "string",
+            "Endereco_eletronico": "string",
+            "Regiao_de_Comercializacao": "Int64",
+            "Data_Registro_ANS": "string"
+        }
     )
 
 df['Regiao_de_Comercializacao'] = pd.to_numeric(df['Regiao_de_Comercializacao'], errors='coerce').astype('Int64')
