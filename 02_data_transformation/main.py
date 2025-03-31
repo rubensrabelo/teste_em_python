@@ -13,6 +13,14 @@ ZIP_PATH = os.path.join(OUTPUT_DIR, "Teste_Rubens_Rabelo.zip")
 
 
 def extract_table_from_pdf(pdf_path):
+    """Extrai tabelas de um arquivo PDF e retorna um DataFrame consolidado.
+
+    Args:
+        pdf_path (str): Caminho para o arquivo PDF de origem.
+
+    Returns:
+        pd.DataFrame: DataFrame contendo os dados extraídos do PDF.
+    """
     print("Transformando a tabela do Anexo 1 em DataFrame\n")
     try:
         tables = tabula.read_pdf(pdf_path, pages="3-181", multiple_tables=True)
@@ -40,6 +48,14 @@ def extract_table_from_pdf(pdf_path):
 
 
 def rename_columns(df):
+    """Renomeia colunas específicas do DataFrame.
+    
+    Args:
+        df (pd.DataFrame): DataFrame com os dados extraídos.
+
+    Returns:
+        pd.DataFrame: DataFrame com colunas renomeadas.
+    """
     if df.empty:
         print("DataFrame vazio. Nenhuma coluna será renomeada.\n")
         return df
@@ -50,6 +66,15 @@ def rename_columns(df):
 
 
 def save_csv(df, csv_path):
+    """Salva o DataFrame em um arquivo CSV.
+    
+    Args:
+        df (pd.DataFrame): DataFrame a ser salvo.
+        csv_path (str): Caminho para salvar o arquivo CSV.
+
+    Returns:
+        bool: True se o CSV for salvo com sucesso, False caso contrário.
+    """
     if df.empty:
         print("Erro: DataFrame vazio. O CSV não será salvo.\n")
         return False
@@ -65,6 +90,15 @@ def save_csv(df, csv_path):
 
 
 def compress_csv(csv_path, zip_path):
+    """Compacta o arquivo CSV em um arquivo ZIP.
+    
+    Args:
+        csv_path (str): Caminho do arquivo CSV.
+        zip_path (str): Caminho do arquivo ZIP de destino.
+
+    Returns:
+        bool: True se o ZIP for criado com sucesso, False caso contrário.
+    """
     if not os.path.exists(csv_path):
         print("Erro: Arquivo CSV não encontrado. O ZIP não será criado.\n")
         return False
