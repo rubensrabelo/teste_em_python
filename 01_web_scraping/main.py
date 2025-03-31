@@ -8,6 +8,15 @@ URL_BASE = "https://www.gov.br/ans/pt-br/acesso-a-informacao/participacao-da-soc
 
 
 def get_links_pdfs(URL_BASE):
+    """
+    Obtém os links dos arquivos PDF disponíveis na página especificada.
+
+    Parâmetros:
+        URL_BASE (str): URL da página contendo os links para download dos arquivos PDF.
+
+    Retorna:
+        list: Lista contendo os URLs dos arquivos PDF encontrados.
+    """
     try:
         response = requests.get(URL_BASE)
         response.raise_for_status()
@@ -31,6 +40,16 @@ def get_links_pdfs(URL_BASE):
 
 
 def download_pdfs(pdf_links, destin_folder="files"):
+    """
+    Faz o download dos arquivos PDF a partir dos links fornecidos e os salva na pasta especificada.
+
+    Parâmetros:
+        pdf_links (list): Lista de URLs dos arquivos PDF a serem baixados.
+        destin_folder (str): Caminho do diretório onde os arquivos serão armazenados. Padrão: "files".
+
+    Retorna:
+        str: Caminho da pasta onde os arquivos foram salvos.
+    """
     os.makedirs(destin_folder, exist_ok=True)
 
     for pdf_url in pdf_links:
@@ -52,6 +71,16 @@ def download_pdfs(pdf_links, destin_folder="files"):
 
 
 def compress_pdfs(destin_folder="files", zip_name="arquivos_pdfs.zip"):
+    """
+    Compacta os arquivos PDF baixados em um único arquivo ZIP.
+
+    Parâmetros:
+        destin_folder (str): Caminho do diretório contendo os arquivos a serem compactados. Padrão: "files".
+        zip_name (str): Nome do arquivo ZIP a ser gerado. Padrão: "arquivos_pdfs.zip".
+
+    Retorna:
+        None
+    """
     zip_path = os.path.join(destin_folder, zip_name)
 
     try:
