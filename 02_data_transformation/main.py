@@ -23,7 +23,7 @@ def extract_table_from_pdf(pdf_path):
     """
     print("Transformando a tabela do Anexo 1 em DataFrame\n")
     try:
-        tables = tabula.read_pdf(pdf_path, pages="3-181", multiple_tables=True)
+        tables = tabula.read_pdf(pdf_path, pages="3-181", multiple_tables=True, lattice=True)
 
         if not tables:
             raise ValueError("Nenhuma tabela encontrada no PDF.")
