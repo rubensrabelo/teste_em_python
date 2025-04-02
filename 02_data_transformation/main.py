@@ -49,7 +49,7 @@ def extract_table_from_pdf(pdf_path):
 
 def rename_columns(df):
     """Renomeia colunas específicas do DataFrame.
-    
+
     Args:
         df (pd.DataFrame): DataFrame com os dados extraídos.
 
@@ -67,7 +67,7 @@ def rename_columns(df):
 
 def save_csv(df, csv_path):
     """Salva o DataFrame em um arquivo CSV.
-    
+
     Args:
         df (pd.DataFrame): DataFrame a ser salvo.
         csv_path (str): Caminho para salvar o arquivo CSV.
@@ -91,7 +91,7 @@ def save_csv(df, csv_path):
 
 def compress_csv(csv_path, zip_path):
     """Compacta o arquivo CSV em um arquivo ZIP.
-    
+
     Args:
         csv_path (str): Caminho do arquivo CSV.
         zip_path (str): Caminho do arquivo ZIP de destino.
