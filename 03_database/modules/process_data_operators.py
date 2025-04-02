@@ -57,7 +57,7 @@ def load_data(csv_path):
         raise FileNotFoundError(f"Arquivo não encontrado: {csv_path}") from e
 
 
-def separar_dataframes(df):
+def separate_dataframes(df):
     """
     Separa o DataFrame principal em três DataFrames especializados.
 
@@ -82,7 +82,7 @@ def separar_dataframes(df):
     return operator, address, representatives
 
 
-def salvar_dataframes(operator, address, representatives, output_dir):
+def save_dataframes(operator, address, representatives, output_dir):
     """
     Salva os DataFrames em arquivos CSV separados.
 
@@ -106,19 +106,31 @@ def salvar_dataframes(operator, address, representatives, output_dir):
     print(f"Arquivo separados e salvos em: {output_dir}")
 
 
-def process_data_operators(csv_path=None, output_dir="files"):
+def run_process_data_operators(csv_path=None, output_dir="files"):
+    """
+    Executa o processamento dos dados das operadoras.
+
+    Esta função carrega os dados de um arquivo CSV, separa-os em três DataFrames 
+    distintos (operadoras, endereços e representantes) e os salva em arquivos CSV 
+    separados dentro do diretório especificado.
+
+    Args:
+        csv_path (str, opcional): Caminho para o arquivo CSV contendo os dados das operadoras. 
+                                  Se None, o caminho será carregado das variáveis de ambiente.
+        output_dir (str, opcional): Diretório onde os arquivos CSV processados serão salvos. 
+                                    Padrão é "files".
+
+    Returns:
+        tuple: Uma tupla contendo três DataFrames:
+            - operadoras (pd.DataFrame): Dados das operadoras.
+            - enderecos (pd.DataFrame): Dados de endereço.
+            - representantes (pd.DataFrame): Dados dos representantes.
+    """
     if csv_path is None:
         csv_path = load_environment_variables()
 
     df = load_data(csv_path)
-    operadoras, enderecos, representantes = separar_dataframes(df)
-    salvar_dataframes(operadoras, enderecos, representantes, output_dir)
+    operadoras, enderecos, representantes = separate_dataframes(df)
+    save_dataframes(operadoras, enderecos, representantes, output_dir)
 
     return operadoras, enderecos, representantes
-
-
-if __name__ == "__main__":
-    try:
-        process_data_operators()
-    except Exception as e:
-        print(f"Erro ao processar dados: {str(e)}")

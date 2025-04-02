@@ -3,21 +3,43 @@ import requests
 from bs4 import BeautifulSoup
 from urllib.parse import urljoin
 import zipfile
+from dotenv import load_dotenv
+
+
+def load_environment_variables():
+    """
+    Carrega as variáveis de ambiente do arquivo .env.
+
+    Returns:
+        dict: Dicionário contendo as seguintes chaves:
+            - CSV_PAGE_URL (str): URL da página contendo o link do CSV.
+            - CSV_OUTPUT_DIR (str): Diretório de saída do arquivo CSV.
+            - BASE_URL (str): URL base para os demonstrativos contábeis.
+            - DEMONSTRACOES_OUTPUT_DIR (str): Diretório de saída dos demonstrativos contábeis.
+            - YEARS (list): Lista de anos a serem processados.
+    """
+    load_dotenv()
+    return {
+        "CSV_PAGE_URL": os.getenv("CSV_PAGE_URL"),
+        "CSV_OUTPUT_DIR": os.getenv("CSV_OUTPUT_DIR"),
+        "BASE_URL": os.getenv("BASE_URL"),
+        "DEMONSTRACOES_OUTPUT_DIR": os.getenv("DEMONSTRACOES_OUTPUT_DIR"),
+        "YEARS": list(map(int, os.getenv("YEARS", "").split(',')))
+    }
 
 
 def download_csv_from_table(url, output_dir):
     """
-    Baixa um arquivo CSV específico de uma página HTML.
+    Faz o scraping de uma página da web para baixar um arquivo CSV.
 
     Args:
-        url (str): URL da página que contém o link para o arquivo CSV
-        output_dir (str): Diretório local onde o CSV será salvo
+        url (str): URL da página contendo o link do CSV.
+        output_dir (str): Diretório onde o arquivo CSV será salvo.
 
     Returns:
-        None: A função não retorna valores, apenas salva o arquivo localmente
+        None
     """
     os.makedirs(output_dir, exist_ok=True)
-
     try:
         response = requests.get(url)
         response.raise_for_status()
@@ -30,7 +52,6 @@ def download_csv_from_table(url, output_dir):
 
     if link and link["href"]:
         csv_url = urljoin(url, link["href"])
-
         try:
             csv_response = requests.get(csv_url)
             csv_response.raise_for_status()
@@ -39,7 +60,6 @@ def download_csv_from_table(url, output_dir):
             return
 
         csv_path = os.path.join(output_dir, "Relatorio_cadop.csv")
-
         with open(csv_path, "wb") as file:
             file.write(csv_response.content)
         print(f"CSV salvo em {csv_path}")
@@ -49,14 +69,16 @@ def download_csv_from_table(url, output_dir):
 
 def download_and_extract_zip(url, output_dir):
     """
-    Baixa e extrai um arquivo ZIP para o diretório especificado.
+    Faz o download de um arquivo ZIP e extrai seu conteúdo.
+
+    Se o arquivo ZIP já existir no diretório, ele não será baixado novamente.
 
     Args:
-        url (str): URL do arquivo ZIP a ser baixado
-        output_dir (str): Diretório local onde o ZIP será salvo e extraído
+        url (str): URL do arquivo ZIP.
+        output_dir (str): Diretório onde o arquivo será salvo e extraído.
 
     Returns:
-        None: A função não retorna valores, apenas salva e extrai o arquivo
+        None
     """
     os.makedirs(output_dir, exist_ok=True)
     zip_path = os.path.join(output_dir, os.path.basename(url))
@@ -81,17 +103,20 @@ def download_and_extract_zip(url, output_dir):
     print(f"Arquivos extraídos para {output_dir}")
 
 
-def process_demonstracoes_contabeis(base_url, output_dir, years):
+def process_accounting_statements(base_url, output_dir, years):
     """
-    Processa demonstrações contábeis por ano, baixando e extraindo arquivos ZIP.
+    Faz o scraping dos demonstrativos contábeis de uma série de anos.
+
+    O processo busca na página principal as pastas correspondentes aos anos desejados,
+    localiza os arquivos ZIP dentro dessas pastas e faz o download e extração.
 
     Args:
-        base_url (str): URL base contendo as pastas anuais
-        output_dir (str): Diretório base onde os arquivos serão organizados
-        years (list): Lista de anos (inteiros) para processar
+        base_url (str): URL base onde estão localizados os demonstrativos contábeis.
+        output_dir (str): Diretório onde os arquivos extraídos serão armazenados.
+        years (list): Lista de anos a serem processados.
 
     Returns:
-        None: A função não retorna valores, apenas organiza os arquivos localmente
+        None
     """
     try:
         response = requests.get(base_url)
@@ -133,13 +158,19 @@ def process_demonstracoes_contabeis(base_url, output_dir, years):
             print(f"Nenhum arquivo ZIP encontrado para o ano {year}.")
 
 
-if __name__ == "__main__":
-    # Baixar CSV específico
-    csv_page_url = "https://dadosabertos.ans.gov.br/FTP/PDA/operadoras_de_plano_de_saude_ativas/"
-    csv_output_dir = "data/cadastros_empresas_ativas_na_ans"
-    download_csv_from_table(csv_page_url, csv_output_dir)
+def run_scrap_data_base():
+    """
+    Executa o processo de scraping de dados.
 
-    # Baixar e extrair demonstrações contábeis
-    base_url = "https://dadosabertos.ans.gov.br/FTP/PDA/demonstracoes_contabeis/"
-    demonstracoes_output_dir = "data/demonstracoes_contabeis"
-    process_demonstracoes_contabeis(base_url, demonstracoes_output_dir, [2023, 2024])
+    Este processo inclui:
+    1. O download de um arquivo CSV contendo informações de operadoras.
+    2. O processamento e download de demonstrações contábeis organizadas por ano.
+
+    As URLs e diretórios de saída são carregados a partir das variáveis de ambiente.
+
+    Returns:
+        None
+    """
+    env_vars = load_environment_variables()
+    download_csv_from_table(env_vars["CSV_PAGE_URL"], env_vars["CSV_OUTPUT_DIR"])
+    process_accounting_statements(env_vars["BASE_URL"], env_vars["DEMONSTRACOES_OUTPUT_DIR"], env_vars["YEARS"])

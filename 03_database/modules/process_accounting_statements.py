@@ -86,7 +86,7 @@ def save_consolidated_dataframe(df, output_dir, filename):
     return output_path
 
 
-def process_accounting_statements(csv_path=None, output_dir=None):
+def run_process_accounting_statements(csv_path=None, output_dir=None):
     """
     Função principal que orquestra todo o processamento.
 
@@ -95,7 +95,7 @@ def process_accounting_statements(csv_path=None, output_dir=None):
         output_dir (str, optional): Diretório de saída. Se None, usa "files".
 
     Returns:
-        tuple: (df_consolidado, output_path) - DataFrame consolidado e caminho do arquivo salvo
+        tuple: (consolidate_df, output_path) - DataFrame consolidado e caminho do arquivo salvo
     """
     if csv_path is None or output_dir is None:
         csv_path, output_dir = load_configuration()
@@ -112,10 +112,3 @@ def process_accounting_statements(csv_path=None, output_dir=None):
 
     print(f"Arquivo consolidado salvo em: {output_path}")
     return consolidate_df, output_path
-
-
-if __name__ == "__main__":
-    try:
-        process_accounting_statements()
-    except Exception as e:
-        print(f"Erro ao processar demonstrações contábeis: {str(e)}")
