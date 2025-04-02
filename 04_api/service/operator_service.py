@@ -16,3 +16,17 @@ def search_operator_by_uf(uf_value: str):
         df_operator["UF"].str.lower().str.contains(uf_value, na=False)
     ]
     return results
+
+
+def search_operator_by_cnpj(cnpj: str):
+    """
+    Busca um operador pelo CNPJ exato.
+
+    Args:
+        cnpj (str): CNPJ do operador (14 caracteres).
+
+    Returns:
+        DataFrame: DataFrame contendo o operador correspondente ao CNPJ.
+    """
+    results = df_operator[df_operator["CNPJ"] == cnpj]
+    return results

@@ -4,7 +4,7 @@ import pandas as pd
 
 from models import OperatorRequest
 from repository.operator_repository import df_operator
-from service.operator_service import search_operator_by_uf
+from service.operator_service import search_operator_by_uf, search_operator_by_cnpj
 
 router = APIRouter()
 
@@ -64,3 +64,20 @@ def search_operators_by_uf(
     lower = skip
     upper = lower + limit
     return results.iloc[lower:upper].to_dict(orient="records")
+
+
+@router.get(
+        "/cnpj/{cnpj}",
+        status_code=status.HTTP_200_OK,
+        response_model=list[OperatorRequest]
+)
+def search_operators_by_cnpj(cnpj: str):
+    if len(cnpj) != 14:
+        return []
+
+    results = search_operator_by_cnpj(cnpj)
+
+    if results.empty:
+        return []
+
+    return results.to_dict(orient="records")
