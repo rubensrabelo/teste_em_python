@@ -6,6 +6,16 @@ import zipfile
 
 
 def download_csv_from_table(url, output_dir):
+    """
+    Baixa um arquivo CSV específico de uma página HTML.
+
+    Args:
+        url (str): URL da página que contém o link para o arquivo CSV
+        output_dir (str): Diretório local onde o CSV será salvo
+
+    Returns:
+        None: A função não retorna valores, apenas salva o arquivo localmente
+    """
     os.makedirs(output_dir, exist_ok=True)
 
     try:
@@ -16,7 +26,7 @@ def download_csv_from_table(url, output_dir):
         return
 
     soup = BeautifulSoup(response.text, "html.parser")
-    link = soup.find("a", string="Relatorio_cadop.csv")  # Busca diretamente pelo link correto
+    link = soup.find("a", string="Relatorio_cadop.csv")
 
     if link and link["href"]:
         csv_url = urljoin(url, link["href"])
@@ -38,10 +48,19 @@ def download_csv_from_table(url, output_dir):
 
 
 def download_and_extract_zip(url, output_dir):
+    """
+    Baixa e extrai um arquivo ZIP para o diretório especificado.
+
+    Args:
+        url (str): URL do arquivo ZIP a ser baixado
+        output_dir (str): Diretório local onde o ZIP será salvo e extraído
+
+    Returns:
+        None: A função não retorna valores, apenas salva e extrai o arquivo
+    """
     os.makedirs(output_dir, exist_ok=True)
     zip_path = os.path.join(output_dir, os.path.basename(url))
 
-    # Verificar se o ZIP já existe
     if os.path.exists(zip_path):
         print(f"Arquivo ZIP já existe: {zip_path}")
         return
@@ -63,6 +82,17 @@ def download_and_extract_zip(url, output_dir):
 
 
 def process_demonstracoes_contabeis(base_url, output_dir, years):
+    """
+    Processa demonstrações contábeis por ano, baixando e extraindo arquivos ZIP.
+
+    Args:
+        base_url (str): URL base contendo as pastas anuais
+        output_dir (str): Diretório base onde os arquivos serão organizados
+        years (list): Lista de anos (inteiros) para processar
+
+    Returns:
+        None: A função não retorna valores, apenas organiza os arquivos localmente
+    """
     try:
         response = requests.get(base_url)
         response.raise_for_status()
