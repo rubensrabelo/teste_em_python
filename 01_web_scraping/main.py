@@ -7,7 +7,7 @@ from urllib.parse import urljoin
 URL_BASE = "https://www.gov.br/ans/pt-br/acesso-a-informacao/participacao-da-sociedade/atualizacao-do-rol-de-procedimentos"
 
 
-def get_links_pdfs(URL_BASE):
+def get_links_pdfs(url_base):
     """
     Obtém os links dos arquivos PDF disponíveis na página especificada.
 
@@ -18,10 +18,10 @@ def get_links_pdfs(URL_BASE):
         list: Lista contendo os URLs dos arquivos PDF encontrados.
     """
     try:
-        response = requests.get(URL_BASE)
+        response = requests.get(url_base)
         response.raise_for_status()
     except requests.RequestException as e:
-        print(f"Erro ao acessar {URL_BASE}: {e}\n")
+        print(f"Erro ao acessar {url_base}: {e}\n")
         return []
 
     soup = BeautifulSoup(response.text, "html.parser")
@@ -63,7 +63,7 @@ def download_pdfs(pdf_links, destin_folder="files"):
             with open(pdf_name, "wb") as file:
                 file.write(pdf_response.content)
         except requests.RequestException as e:
-            print(f"Erro ao acessar {URL_BASE}: {e}")
+            print(f"Erro ao acessar {pdf_url}: {e}")
             return []
 
     print("Download concluído.\n")
