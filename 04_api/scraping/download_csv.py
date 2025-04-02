@@ -3,6 +3,7 @@ import requests
 from bs4 import BeautifulSoup
 from urllib.parse import urljoin
 
+
 def download_csv_from_table(url, output_dir):
     """
     Baixa um arquivo CSV específico de uma página HTML.

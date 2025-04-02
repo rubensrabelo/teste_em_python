@@ -18,6 +18,16 @@ def find_all(
     skip: int = Query(0, ge=0),
     limit: int = Query(10, le=100)
 ):
+    """
+    Retorna uma lista de operadores com paginação.
+
+    Args:
+        skip (int): Número de registros a serem ignorados no início (default: 0, deve ser >= 0).
+        limit (int): Número máximo de registros a serem retornados (default: 10, máximo: 100).
+
+    Returns:
+        list[OperatorRequest]: Lista de operadores paginada.
+    """
     df_copy = df_operator.copy()
     df_copy = df_copy.map(lambda x: None if pd.isna(x) else x)
     lower = skip
@@ -35,6 +45,17 @@ def search_operators_by_uf(
     limit: int = Query(10, le=100),
     uf: str | None = Query(None, min_length=2, max_length=2)
 ):
+    """
+    Busca operadores pelo estado (UF) com paginação.
+
+    Args:
+        skip (int): Número de registros a serem ignorados no início (default: 0, deve ser >= 0).
+        limit (int): Número máximo de registros a serem retornados (default: 10, máximo: 100).
+        uf (str | None): Sigla do estado (UF) para busca (opcional, deve ter 2 caracteres).
+
+    Returns:
+        list[OperatorRequest]: Lista de operadores filtrados por UF e paginados.
+    """
     if not uf:
         results = df_operator.copy()
     else:
