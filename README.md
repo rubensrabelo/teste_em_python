@@ -204,6 +204,6 @@ classDiagram
 │
 ├── api/
 │   ├── controller.py               # Controla o fluxo entre a main.py e as rotas
-│   ├── router/
+│   ├── routes/
 │   │   ├── operator_router.py      # Define as rotas da API
 ```
