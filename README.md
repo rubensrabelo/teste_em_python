@@ -4,6 +4,68 @@ O teste está dividido em quatro partes: **Web Scraping, Transformação de Dado
 
 ---
 
+## Configuração do Projeto
+
+### Instalação
+
+Siga os passos abaixo para configurar o projeto:
+
+#### 1. Clone o repositório
+
+Clone o repositório do projeto no seu diretório local:
+
+```bash
+git clone https://github.com/rubensrabelo/teste_em_python.git
+```
+
+Para rodar a aplicação localmente, siga os passos abaixo:
+
+### 2. Criar o Ambiente Virtual
+
+Crie o ambiente virtual para isolar as dependências do projeto. No terminal, execute o seguinte comando:
+
+```bash
+python -m venv venv
+```
+
+
+### 2. Ativar o Ambiente Virtual
+
+Ative o ambiente virtual para isolar as dependências do projeto. No terminal, execute o seguinte comando:
+
+```bash
+source .venv/bin/activate (Linux)
+
+venv\Scripts\activate.bat (Windows)
+```
+
+### 3. Instalar as Dependências
+Com o ambiente virtual ativado, instale as dependências listadas no arquivo requirements.txt utilizando o gerenciador de dependências `pip`:
+
+```bash
+pip install -r requirements.txt
+```
+
+### 4. Executar a Aplicação (Pastas de 01 a 03)
+Após a instalação das dependências, você pode iniciar os testes das pastas 01 a 03 da aplicação com o comando:
+
+```bash
+python main.py  # Pipeline para rodar os outros arquivos
+```
+
+### 5. Executar a Aplicação da API (Pasta 04 - API)
+Após a instalação das dependências, você pode iniciar o servidor da aplicação com o comando:
+
+```bash
+fast dev main.py ou uvicorn main:app --reload
+```
+
+### 6. Acesse a documentação interativa da API no navegador:
+
+- Swagger UI: http://127.0.0.1:8000/docs
+- Redoc: http://127.0.0.1:8000/redoc
+---
+
 ## 01. Web Scraping
 
 **Objetivos**:  
@@ -145,48 +207,3 @@ classDiagram
 │   ├── router/
 │   │   ├── operator_router.py      # Define as rotas da API
 ```
-
-## Configuração do Projeto
-
-### Instalação
-
-Siga os passos abaixo para configurar o projeto:
-
-#### 1. Clone o repositório
-
-Clone o repositório do projeto no seu diretório local:
-
-```bash
-git clone https://github.com/rubensrabelo/teste_em_python.git
-```
-
-Para rodar a aplicação localmente, siga os passos abaixo:
-
-### 1. Ativar o Ambiente Virtual
-
-Ative o ambiente virtual para isolar as dependências do projeto. No terminal, execute o seguinte comando:
-
-```bash
-source .venv/bin/activate
-```
-
-### 2. Instalar as Dependências
-Com o ambiente virtual ativado, instale as dependências listadas no arquivo requirements.txt utilizando o gerenciador de dependências `pip`:
-
-```bash
-pip install -r requirements.txt
-```
-
-3. Executar a Aplicação (Pasta 04 - API)
-
-Após a instalação das dependências, você pode iniciar o servidor da aplicação com o comando:
-
-```bash
-fast dev main.py
-```
-
-### 3. Acesse a documentação interativa da API no navegador:
-
-- Swagger UI: http://127.0.0.1:8000/docs
-- Redoc: http://127.0.0.1:8000/redoc
-
